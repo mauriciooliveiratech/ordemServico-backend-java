@@ -15,7 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ordem_servico")
-public class OrdemServico {
+public class
+
+OrdemServico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +31,14 @@ public class OrdemServico {
     @JoinColumn(nullable = false)
     private Usuario usuario;
 
+    //Data da criacao da os
+    @Column(nullable = false)
+    private LocalDateTime dtCriacao;
+
+    @PrePersist
+    public void prePersist() {
+        this.dtCriacao = LocalDateTime.now();
+    }
     //Marca do aparelho
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -44,40 +54,17 @@ public class OrdemServico {
     @JoinColumn(name = "servico_id", nullable = false)
     private Servico servicos;
 
-    //Situacao atual (Aberto, Em andamento, Finalizado)
-    @ManyToOne
-    @JoinColumn(name = "situacao_id", nullable = false)
-    private Situacao situacao;
-
-    @Column(name = "custo")
-    private BigDecimal custo;
+    //Observacoes
+    private String observacao;
 
     //Valor cobrado
     @Column(nullable = false)
     private BigDecimal valor;
 
-    //Observacoes
-    private String observacao;
+    @Column(name = "custo")
+    private BigDecimal custo;
 
-    //Data da criacao da os
     @Column(nullable = false)
-    private LocalDateTime dtCriacao;
+    private String situacao;
 
-    @PrePersist
-    public void prePersist() {
-        this.dtCriacao = LocalDateTime.now();
-    }
-
-
-    public Servico getServico() {
-        return servicos;
-    }
-
-    public BigDecimal getCusto() {
-        return custo;
-    }
-
-    public void setCusto(BigDecimal custo) {
-        this.custo = custo;
-    }
 }

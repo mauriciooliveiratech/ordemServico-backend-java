@@ -6,6 +6,7 @@ import br.com.os.backend.entity.*;
 import br.com.os.backend.repository.*;
 import br.com.os.backend.service.OrdemServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +25,12 @@ public class OrdemServicoController {
     private ModeloRepository modeloRepository;
     @Autowired
     private ServicoRepository servicoRepository;
-    @Autowired
-    private SituacaoRepository situacaoRepository;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+    private OrdemServicoController ordemServicoService;
 
-    // CRIAR OS
+    // CRIAR
     @PostMapping
     public OrdemServicoResponseDTO criar(@RequestBody OrdemServicoCreateDTO dto) {
 
@@ -39,51 +40,66 @@ public class OrdemServicoController {
         os.setMarca(marcaRepository.findById(dto.marcaId()).orElseThrow());
         os.setModelo(modeloRepository.findById(dto.modeloId()).orElseThrow());
         os.setServicos(servicoRepository.findById(dto.servicoId()).orElseThrow());
-        os.setSituacao(situacaoRepository.findById(dto.situacaoId()).orElseThrow());
-        os.setUsuario(usuarioRepository.findById(dto.usuarioId()).orElseThrow());
         os.setCusto(dto.custo());
         os.setValor(dto.valor());
+        os.setSituacao(dto.situacao());
+
+
+        // 🔥 NÃO ESQUECER
+        os.setUsuario(
+                usuarioRepository.findById(dto.usuarioId()).orElseThrow()
+        );
 
         OrdemServico salva = service.salvar(os);
 
-        return new OrdemServicoResponseDTO(
-                salva.getId(),
-                salva.getNumeroOS(),
-                salva.getDtCriacao(),
-                salva.getMarca().getNome(),
-                salva.getModelo().getNome(),
-                salva.getServicos().getNome(),
-                salva.getSituacao().getNome(),
-                salva.getUsuario().getNome(),
-                salva.getCusto(),
-                salva.getValor()
-        );
+        return service.listarPorPerfil(os.getUsuario().getId())
+                .stream()
+                .filter(dtoResp -> dtoResp.id().equals(salva.getId()))
+                .findFirst()
+                .orElseThrow();
     }
 
-
-    // LISTAR COM REGRA DE PERFIL
+    // 🔥 LISTAR SIMPLES
     @GetMapping
     public List<OrdemServicoResponseDTO> listarPorUsuario(
             @RequestParam Long usuarioId
     ) {
-        return service.listarPorPerfil(usuarioId)
-                .stream()
-                .map(os -> new OrdemServicoResponseDTO(
-                        os.getId(),
-                        os.getNumeroOS(),
-                        os.getDtCriacao(),
-                        os.getMarca().getNome(),
-                        os.getModelo().getNome(),
-                        os.getServicos().getNome(),
-                        os.getSituacao().getNome(),
-                        os.getUsuario().getNome(),
-                        os.getCusto(),
-                        os.getValor()
-
-
-                ))
-                .toList();
+        return service.listarPorPerfil(usuarioId);
     }
+
+    // ATUALIZAR
+    @PutMapping("/{id}")
+    public OrdemServicoResponseDTO atualizar(
+            @PathVariable Long id,
+            @RequestBody OrdemServicoCreateDTO dto
+    ) {
+        OrdemServico os = service.buscarPorId(id);
+        os.setNumeroOS(dto.numeroOS());
+        os.setValor(dto.valor());
+        os.setCusto(dto.custo());
+        os.setObservacao(dto.observacao());
+        os.setSituacao(dto.situacao());
+
+
+        service.salvar(os);
+
+        // 🔥 Retorna DTO correto
+        return service.listarPorPerfil(os.getUsuario().getId())
+                .stream()
+                .filter(dtoResp -> dtoResp.id().equals(os.getId()))
+                .findFirst()
+                .orElseThrow();
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
+
 
 

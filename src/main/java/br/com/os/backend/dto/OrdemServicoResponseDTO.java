@@ -7,13 +7,12 @@ public record OrdemServicoResponseDTO(
         Long id,
         String numeroOS,
         LocalDateTime dtCriacao,
+        String tecnico,
         String marca,
         String modelo,
         String servico,
-        String situacao,
-        String tecnico,
+        String observacao,
         BigDecimal valor,
-        BigDecimal custo
-
-
+        BigDecimal custo,
+        String situacao
 ) {}

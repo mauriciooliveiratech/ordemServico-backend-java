@@ -22,7 +22,7 @@ public class Usuario {
     private String nome;
 
     //Login (único)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     //senha (hash futuramente)
