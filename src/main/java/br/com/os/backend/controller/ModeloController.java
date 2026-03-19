@@ -22,9 +22,15 @@ public class ModeloController {
     }
 
     @PostMapping
-    public ResponseEntity<ModeloResponseDTO> criar(@RequestBody ModeloRequestDTO dto){
-        return ResponseEntity.ok(service.salvar(dto));
+    public ModeloResponseDTO criar(@RequestBody ModeloRequestDTO dto){
+        return service.salvar(dto);
     }
+
+   // @GetMapping
+    // public List<ModeloResponseDTO> listar() {
+   //     return service.listar();
+   // }
+
 
     @GetMapping
     public List<ModeloResponseDTO> listarPorMarca(@RequestParam Long marcaId){

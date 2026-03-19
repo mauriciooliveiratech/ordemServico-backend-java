@@ -1,5 +1,6 @@
 package br.com.os.backend.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ordem_servico")
-public class
+public class OrdemServico {
 
-OrdemServico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +28,7 @@ OrdemServico {
 
     //Tecnico Responsável
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     //Data da criacao da os
@@ -37,22 +37,24 @@ OrdemServico {
 
     @PrePersist
     public void prePersist() {
+
         this.dtCriacao = LocalDateTime.now();
     }
+
     //Marca do aparelho
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "marca_id", nullable = false)
     private Marca marca;
 
     //Modelo do aparelho
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "modelo_id", nullable = false)
     private Modelo modelo;
 
     //Servico executado
     @ManyToOne
     @JoinColumn(name = "servico_id", nullable = false)
-    private Servico servicos;
+    private Servico servico;
 
     //Observacoes
     private String observacao;

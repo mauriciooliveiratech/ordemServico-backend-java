@@ -1,9 +1,13 @@
-package br.com.os.backend.service;
+package br.com.os.backend.controller;
 
-import br.com.os.backend.MarcaService;
+import br.com.os.backend.dto.MarcaRequestDTO;
+import br.com.os.backend.dto.MarcaResponseDTO;
+import br.com.os.backend.service.MarcaService;
 import br.com.os.backend.entity.Marca;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -12,6 +16,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 
 public class MarcaController {
+    @Autowired
     private final MarcaService service;
 
     public MarcaController(MarcaService service){
@@ -19,12 +24,13 @@ public class MarcaController {
     }
 
     @PostMapping
-    public ResponseEntity<Marca> criar(@RequestBody String nome){
-        return ResponseEntity.ok(service.salvar(nome));
+    public MarcaResponseDTO salvar (@RequestBody MarcaRequestDTO dto){
+
+        return service.salvar(dto);
     }
 
     @GetMapping
-    public List<Marca> listar(){
+    public List<MarcaResponseDTO> listar(){
         return service.listar();
     }
 }

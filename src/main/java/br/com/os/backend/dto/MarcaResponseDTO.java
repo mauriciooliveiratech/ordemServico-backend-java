@@ -1,9 +1,6 @@
 package br.com.os.backend.dto;
 
-import java.math.BigDecimal;
-
-public record ServicoRequestDTO (
+public record MarcaResponseDTO (
         Long id,
         String nome
-){}
-
+){ }

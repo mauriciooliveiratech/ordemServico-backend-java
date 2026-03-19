@@ -20,14 +20,13 @@ public class ServicoService {
     public ServicoResponseDTO salvar(ServicoRequestDTO dto) {
         Servico servicos = new Servico();
         servicos.setNome(dto.nome());
-        servicos.setValor(dto.valor());
 
         Servico salvo = repository.save(servicos);
         return toDTO(salvo);
     }
 
-    public List<ServicoResponseDTO> listarAtivos() {
-        return repository.findByAtivoTrue()
+    public List<ServicoResponseDTO> listar() {
+        return repository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .toList();
@@ -35,12 +34,11 @@ public class ServicoService {
 
     public void desativar(long id) {
         Servico servicos = repository.findById(id).orElseThrow();
-        servicos.setAtivo(false);
         repository.save(servicos);
     }
 
     private ServicoResponseDTO toDTO(Servico s) {
-        return new ServicoResponseDTO(s.getId(), s.getNome(), s.getValor(), s.getAtivo());
+        return new ServicoResponseDTO(s.getId(), s.getNome());
     };
 
 }

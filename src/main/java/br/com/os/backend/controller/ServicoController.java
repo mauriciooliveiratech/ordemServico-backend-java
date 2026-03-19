@@ -2,6 +2,7 @@ package br.com.os.backend.controller;
 
 import br.com.os.backend.dto.ServicoRequestDTO;
 import br.com.os.backend.dto.ServicoResponseDTO;
+import br.com.os.backend.entity.Servico;
 import br.com.os.backend.service.ServicoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ServicoController {
 
     @GetMapping
     public List<ServicoResponseDTO> listar(){
-        return service.listarAtivos();
+        return service.listar();
     }
 
     @DeleteMapping("/{id}")

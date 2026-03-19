@@ -1,15 +1,13 @@
 package br.com.os.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.math.BigDecimal;
-import java.time.DateTimeException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record OrdemServicoCreateDTO(
-
-        String numeroOS,
-        LocalDateTime dtCriacao,
+public record OrdemServicoRequest (
         Long usuarioId,
+        String numeroOS,
         Long marcaId,
         Long modeloId,
         Long servicoId,
@@ -17,6 +15,4 @@ public record OrdemServicoCreateDTO(
         BigDecimal valor,
         BigDecimal custo,
         String situacao
-
-
-) {}
+){}

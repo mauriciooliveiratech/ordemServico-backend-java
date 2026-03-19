@@ -30,16 +30,34 @@ public class ModeloService {
             throw new RuntimeException("Modelo já existe para esta marca");
         }
 
-        Modelo modelo = new Modelo(null, dto.nome(), marca);
+        Modelo modelo = new Modelo();
+        modelo.setNome(dto.nome());
+        modelo.setMarca(marca);
         Modelo salvo = modeloRepository.save(modelo);
 
-        return new ModeloResponseDTO(salvo.getId(), salvo.getNome(), salvo.getMarca().getNome());
+        return new ModeloResponseDTO(
+                salvo.getId(),
+                salvo.getNome(),
+                salvo.getMarca().getNome()
+        );
+    }
+
+    public List<ModeloResponseDTO> listar(){
+        return modeloRepository.findAll().stream()
+                .map(m-> new ModeloResponseDTO(
+                        m.getId(),
+                        m.getNome(),
+                        m.getMarca().getNome()
+                ))
+                .toList();
+
     }
 
     public List<ModeloResponseDTO> listarPorMarca(Long marcaId){
-        return modeloRepository.findByMarcaId(marcaId).stream().map(m-> new ModeloResponseDTO(m.getId(),m.getNome(),m.getMarca().getNome())).toList();
+        return modeloRepository.findByMarcaId(
+                marcaId).stream().map(m->
+                new ModeloResponseDTO(m.getId(),m.getNome(),m.getMarca().getNome())).toList();
 
     }
-
 
 }

@@ -18,17 +18,16 @@ public class UsuarioService {
     public UsuarioResponseDTO criar(UsuarioCreateDTO dto){
 
         Usuario usuario = new Usuario();
-        usuario.setNome(dto.nome());
-        usuario.setUsername(dto.username());
-        usuario.setSenha(dto.senha());
+        usuario.setLogin(dto.nome());
+        usuario.setSenha(dto.username());
         usuario.setPerfil(dto.perfil());
 
             Usuario salvo = repository.save(usuario);
 
         return new UsuarioResponseDTO(
                 salvo.getId(),
-                salvo.getNome(),
-                salvo.getUsername(),
+                salvo.getLogin(),
+                salvo.getSenha(),
                 salvo.getPerfil()
         );
     }
@@ -36,8 +35,8 @@ public class UsuarioService {
     public List<UsuarioResponseDTO> listar(){
         return repository.findAll().stream().map(u -> new UsuarioResponseDTO(
                 u.getId(),
-                u.getNome(),
-                u.getUsername(),
+                u.getLogin(),
+                u.getSenha(),
                 u.getPerfil()
         ))
                 .toList();

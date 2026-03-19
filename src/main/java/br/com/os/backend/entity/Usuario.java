@@ -1,38 +1,22 @@
 package br.com.os.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "usuarios")
+@Data
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Nome exibido
-    @Column(nullable = false)
-    private String nome;
-
-    //Login (único)
-    @Column(nullable = false, unique = true)
-    private String username;
-
-    //senha (hash futuramente)
-    @Column(nullable = false)
+    private String login;
     private String senha;
 
-    //Admin ou Tecnico
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Perfil perfil;
+    private Perfil perfil; // 👈 enum, NÃO String
 
-
+    private String nome; // ⚠️ importante para o erro 2
 }
