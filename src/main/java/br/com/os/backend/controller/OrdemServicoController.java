@@ -46,13 +46,5 @@ public class OrdemServicoController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
-    @GetMapping("/")
-    public String home() {
-        return "OK";
-    }
 
-    @GetMapping("/health")
-    public String health() {
-        return "UP";
-    }
 }
