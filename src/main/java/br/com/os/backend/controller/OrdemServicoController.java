@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/os")
-@CrossOrigin(origins = "https://ordem-servico-frontend-react.vercel.app")
+@CrossOrigin(origins = "*")
 public class OrdemServicoController {
 
     private final OrdemServicoService service;
